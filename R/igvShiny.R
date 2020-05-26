@@ -12,7 +12,7 @@ igvShiny <- function(options, width = NULL, height = NULL, elementId = NULL, dis
   supportedGenomes <- c("hg38", "hg19", "mm10", "tair10", "rhos")
   stopifnot(options$genomeName %in% supportedGenomes)
 
-  printf("--- ~/github/igvShiny/R/igvShiny ctor");
+  print("--- ~/github/igvShiny/R/igvShiny ctor");
 
   htmlwidgets::createWidget(
     name = 'igvShiny',
@@ -76,7 +76,7 @@ removeUserAddedTracks <- function(session)
 loadBedTrack <- function(session, trackName, tbl, color="gray", trackHeight=50, deleteTracksOfSameName=TRUE, quiet=TRUE)
 {
    if(!quiet){
-      printf("--- igvShiny::loadBedTrack");
+      print("--- igvShiny::loadBedTrack");
       print(dim(tbl))
       print(head(tbl))
       print(unlist(lapply(tbl, class)))
@@ -92,8 +92,8 @@ loadBedTrack <- function(session, trackName, tbl, color="gray", trackHeight=50, 
       colnames(tbl)[1] <- "chr"
 
    if(all(colnames(tbl)[1:3] != c("chr", "start", "end"))){
-      printf("found these colnames: %s", paste(colnames(tbl), collapse=", "))
-      printf("            required: %s", paste(c("chr", "start", "end"), collapse=", "))
+      print("found these colnames: %s", paste(colnames(tbl), collapse=", "))
+      print("            required: %s", paste(c("chr", "start", "end"), collapse=", "))
       stop("improper columns in bed track data.frame")
       }
 
@@ -116,10 +116,10 @@ loadBedGraphTrack <- function(session, trackName, tbl, color="gray", trackHeight
    stopifnot(ncol(tbl) >= 4)
 
    if(!quiet){
-      printf("--- igvShiny::loadBedGraphTrack");
-      printf("    %d rows, %d columns", nrow(tbl), ncol(tbl))
-      printf("    colnames: %s", paste(colnames(tbl), collapse=", "))
-      printf("    col classes: %s", paste(unlist(lapply(tbl, class)), collapse=", "))
+      print("--- igvShiny::loadBedGraphTrack");
+      print("    %d rows, %d columns", nrow(tbl), ncol(tbl))
+      print("    colnames: %s", paste(colnames(tbl), collapse=", "))
+      print("    col classes: %s", paste(unlist(lapply(tbl, class)), collapse=", "))
       print(fivenum(tbl[, 4]))
       }
 
@@ -135,8 +135,8 @@ loadBedGraphTrack <- function(session, trackName, tbl, color="gray", trackHeight
    colnames(tbl)[4] <- "value"
 
    if(all(colnames(tbl)[1:3] != c("chr", "start", "end"))){
-      printf("found these colnames: %s", paste(colnames(tbl)[1:3], collapse=", "))
-      printf("            required: %s", paste(c("chr", "start", "end"), collapse=", "))
+      print("found these colnames: %s", paste(colnames(tbl)[1:3], collapse=", "))
+      print("            required: %s", paste(c("chr", "start", "end"), collapse=", "))
       stop("improper columns in bed track data.frame")
       }
 
