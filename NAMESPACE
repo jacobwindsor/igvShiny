@@ -10,5 +10,7 @@ export(
    loadVcfTrack,
    removeTracksByName,
    removeUserAddedTracks,
-   redrawIgvWidget
+   redrawIgvWidget,
+   getSupportedGenomes,
+   loadGenome
    )

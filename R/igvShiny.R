@@ -1,6 +1,26 @@
 library(jsonlite)
 library(shiny)
 library(VariantAnnotation)
+
+supportedGenomes <- c(
+   "hg38",
+   "hg19",
+   "hg18",
+   "mm10",
+   "gorGor4",
+   "panTro4",
+   "panPan2",
+   "susScr11",
+   "bosTau8",
+   "canFam3",
+   "rn6",
+   "danRer11",
+   "danRer10",
+   "dm6",
+   "ce11",
+   "sacCer3"
+)
+
 #----------------------------------------------------------------------------------------------------
 state <- new.env(parent=emptyenv())
 state[["userAddedTracks"]] <- list()
@@ -9,7 +29,6 @@ igvShiny <- function(options, width = NULL, height = NULL, elementId = NULL, dis
 {
   supportedOptions <- c("genomeName", "initialLocus")
   stopifnot(all(supportedOptions %in% names(options)))
-  supportedGenomes <- c("hg38", "hg19", "mm10", "tair10", "rhos")
   stopifnot(options$genomeName %in% supportedGenomes)
 
   print("--- ~/github/igvShiny/R/igvShiny ctor");
@@ -183,4 +202,13 @@ loadVcfTrack <- function(session, trackName, vcfData, deleteTracksOfSameName=TRU
 
 } # loadVcfTrack
 #------------------------------------------------------------------------------------------------------------------------
-
+getSupportedGenomes <- function() {
+   return (supportedGenomes)
+} # getSupportedGenomes
+#------------------------------------------------------------------------------------------------------------------------
+loadGenome <- function(session, options) {
+   stopifnot(options$genomeName %in% supportedGenomes)
+   message <- list(options=options)
+   session$sendCustomMessage("loadGenome", message)
+} # loadGenome
+#------------------------------------------------------------------------------------------------------------------------

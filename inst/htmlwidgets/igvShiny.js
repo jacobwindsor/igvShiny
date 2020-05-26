@@ -60,112 +60,23 @@ HTMLWidgets.widget({
 //------------------------------------------------------------------------------------------------------------------------
 function genomeSpecificOptions(genomeName, initialLocus, displayMode, trackHeight)
 {
-    var hg19_options = {
-    locus: initialLocus,
-    flanking: 1000,
-    showRuler: true,
-    minimumBases: 5,
-
-     reference: {id: "hg19"},
-     tracks: [
-        {name: 'Gencode v18',
-              url: "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/genes/gencode.v18.collapsed.bed",
-         indexURL: "https://s3.amazonaws.com/igv.broadinstitute.org/annotations/hg19/genes/gencode.v18.collapsed.bed.idx",
-         visibilityWindow: 2000000,
-         displayMode: displayMode
-         }
-        ]
-     }; // hg19_options
-
-
-    var hg38_options = {
-       locus: initialLocus,
-       minimumBases: 5,
-       flanking: 1000,
-       showRuler: true,
-       genome: "hg38"
-       }; // hg38_options
-
-
-   var mm10_options = {
+  
+    var hosted_genomes = ["hg38","hg19","hg18","mm10","gorGor4","panTro4", "panPan2", "susScr11","bosTau8","canFam3","rn6","danRer11","danRer10","dm6","ce11","sacCer3"];
+    
+    var base_options = {
       locus: initialLocus,
-      flanking: 2000,
-      minimumBases: 5,
+      flanking: 1000,
       showRuler: true,
-      genome: "mm10"
-      }; // mm10_options
-
-   var tair10_options = {
-         locus: initialLocus,
-         flanking: 2000,
-	 showKaryo: false,
-         showNavigation: true,
-         minimumBases: 5,
-         showRuler: true,
-         reference: {id: "TAIR10",
-                fastaURL: "https://igv-data.systemsbiology.net/static/tair10/Arabidopsis_thaliana.TAIR10.dna.toplevel.fa",
-                indexURL: "https://igv-data.systemsbiology.net/static/tair10/Arabidopsis_thaliana.TAIR10.dna.toplevel.fa.fai",
-                aliasURL: "https://igv-data.systemsbiology.net/static/tair10/chromosomeAliases.txt"
-                },
-         tracks: [
-           {name: 'Genes TAIR10',
-            type: 'annotation',
-            visibilityWindow: 500000,
-            url: "https://igv-data.systemsbiology.net/static/tair10/TAIR10_genes.sorted.chrLowered.gff3.gz",
-            color: "darkred",
-            indexed: true,
-            height: trackHeight,
-            displayMode: displayMode
-            },
-            ]
-          }; // tair10_options
-
-   var rhos_options = {
-         locus: initialLocus,
-         flanking: 2000,
-	 showKaryo: false,
-         showNavigation: true,
-         minimumBases: 5,
-         showRuler: true,
-         reference: {id: "Rhodobacter sphaeroides",
-                     fastaURL: "https://igv-data.systemsbiology.net/static/rhos/GCF_000012905.2_ASM1290v2_genomic.fna",
-                     indexURL: "https://igv-data.systemsbiology.net/static/rhos/GCF_000012905.2_ASM1290v2_genomic.fna.fai"
-                },
-         tracks: [
-           {name: 'Genes',
-            type: 'annotation',
-            visibilityWindow: 500000,
-            url: "https://igv-data.systemsbiology.net/static/rhos/GCF_000012905.2_ASM1290v2_genomic.gff.gz",
-            color: "darkred",
-            indexed: true,
-            height: trackHeight,
-            displayMode: displayMode
-            },
-            ]
-          }; // rhos_options
-
-   var igvOptions = null;
-
-   switch(genomeName) {
-      case "hg19":
-         igvOptions = hg19_options;
-         break;
-      case "hg38":
-         igvOptions = hg38_options;
-         break;
-       case "mm10":
-         igvOptions = mm10_options;
-         break;
-       case "tair10":
-         igvOptions = tair10_options;
-         break;
-       case "rhos":
-         igvOptions = rhos_options;
-         break;
-         } // switch on genomeName
-
-    return(igvOptions)
-
+      minimumBases: 5     
+    };
+    
+    if(hosted_genomes.includes(genomeName)) {
+      return Object.assign({}, base_options, { genome: genomeName })
+    }
+    
+    else {
+      console.error("Unsupported genome " + genomeName)
+    }
 } // genomeSpecificOptions
 //------------------------------------------------------------------------------------------------------------------------
 Shiny.addCustomMessageHandler("redrawIgvWidget",
@@ -358,3 +269,14 @@ Shiny.addCustomMessageHandler("loadVcfTrack",
 
 );
 //------------------------------------------------------------------------------------------------------------------------
+Shiny.addCustomMessageHandler("loadGenome", 
+  function(message) {
+    var options = message.options;
+    console.log("=== loadGenome " + options.genomeName);
+    var config = genomeSpecificOptions(options.genomeName, options.initialLocus,
+                                                  options.displayMode, options.trackHeight);
+                         
+    window.igvBrowser.removeAllTracks();                         
+    window.igvBrowser.loadGenome(config);
+  }
+); 
