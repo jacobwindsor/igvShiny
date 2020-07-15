@@ -179,6 +179,58 @@ Shiny.addCustomMessageHandler("loadBedTrack",
 
 
 );
+Shiny.addCustomMessageHandler("loadBedTrackUrl",
+
+   function(message){
+      console.log("=== loadLocalBedTrack");
+      console.log(message)
+      var trackName = message.trackName;
+      var url = message.url;
+      var color = message.color;
+      var trackHeight = message.trackHeight;
+
+      var config = {format: "bed",
+                    name: trackName,
+                    type: "annotation",
+                    sourceType: "file",
+                    url: url,
+                    indexed: false,
+                    displayMode: "EXPANDED",
+                    color: color,
+                    height: trackHeight
+                    };
+      window.igvBrowser.loadTrack(config);
+      }
+
+
+);
+//------------------------------------------------------------------------------------------------------------------------
+Shiny.addCustomMessageHandler("loadGffTrackUrl",
+
+   function(message){
+      console.log("=== loadGffTrackUrl");
+      console.log(message)
+      var trackName = message.trackName;
+      var url = message.url;
+      var color = message.color;
+      var trackHeight = message.trackHeight;
+
+      var config = {format: "gff3",
+                    name: trackName,
+                    type: "annotation",
+                    sourceType: "file",
+                    url: url,
+                    indexed: false,
+                    displayMode: "EXPANDED",
+                    color: color,
+                    height: trackHeight
+                    };
+      window.igvBrowser.loadTrack(config);
+      }
+
+
+);
+//-------
 //------------------------------------------------------------------------------------------------------------------------
 Shiny.addCustomMessageHandler("loadBedGraphTrack",
 

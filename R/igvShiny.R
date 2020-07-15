@@ -1,6 +1,8 @@
 library(jsonlite)
 library(shiny)
 library(VariantAnnotation)
+library(rtracklayer)
+require(base64enc)
 
 supportedGenomes <- c(
    "hg38",
@@ -92,6 +94,31 @@ removeUserAddedTracks <- function(session)
 
 } # removeUserAddedTracks
 #------------------------------------------------------------------------------------------------------------------------
+
+loadBedTrackUrl <- function(session, trackName, url,  color="gray", trackHeight=50, deleteTracksOfSameName=TRUE) {
+   print(url, deleteTracksOfSameName)
+   if(deleteTracksOfSameName){
+      removeTracksByName(session, trackName);
+   }
+   
+   state[["userAddedTracks"]] <- unique(c(state[["userAddedTracks"]], trackName))
+   
+   msg.to.igv <- list(trackName=trackName, url=url, color=color, trackHeight=trackHeight)
+   session$sendCustomMessage("loadBedTrackUrl", msg.to.igv)
+}
+
+loadGffTrackUrl <- function(session, trackName, url,  color="gray", trackHeight=50, deleteTracksOfSameName=TRUE) {
+   print(url, deleteTracksOfSameName)
+   if(deleteTracksOfSameName){
+      removeTracksByName(session, trackName);
+   }
+   
+   state[["userAddedTracks"]] <- unique(c(state[["userAddedTracks"]], trackName))
+   
+   msg.to.igv <- list(trackName=trackName, url=url, color=color, trackHeight=trackHeight)
+   session$sendCustomMessage("loadGffTrackUrl", msg.to.igv)
+}
+
 loadBedTrack <- function(session, trackName, tbl, color="gray", trackHeight=50, deleteTracksOfSameName=TRUE, quiet=TRUE)
 {
    if(!quiet){

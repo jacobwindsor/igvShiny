@@ -5,6 +5,8 @@ export(
    showGenomicRegion,
    getGenomicRegion,
    loadBedTrack,
+   loadBedTrackUrl,
+   loadGffTrackUrl,
    loadBedGraphTrack,
    loadSegTrack,
    loadVcfTrack,
