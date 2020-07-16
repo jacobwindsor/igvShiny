@@ -3,6 +3,7 @@ library(shiny)
 library(VariantAnnotation)
 library(rtracklayer)
 require(base64enc)
+require(htmlwidgets)
 
 supportedGenomes <- c(
    "hg38",
