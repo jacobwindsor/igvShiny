@@ -17,3 +17,8 @@ Imports:
     rtracklayer,
     base64enc,
     htmlwidgets
+bioCViews:
+  Software,
+  AnnotationData,
+  ExperimentData,
+  Workflow
