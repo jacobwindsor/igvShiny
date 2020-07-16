@@ -22,3 +22,6 @@ bioCViews:
   AnnotationData,
   ExperimentData,
   Workflow
+SystemRequirements:
+  libbz2-dev,
+  liblzma-dev
