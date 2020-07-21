@@ -36,7 +36,7 @@ igvShiny <- function(options, width = NULL, height = NULL, elementId = NULL, dis
 
   print("--- ~/github/igvShiny/R/igvShiny ctor");
 
-  val <- htmlwidgets::createWidget(
+  htmlwidgets::createWidget(
     name = 'igvShiny',
     options,
     width = width,
