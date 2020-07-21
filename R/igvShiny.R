@@ -28,7 +28,7 @@ supportedGenomes <- c(
 state <- new.env(parent=emptyenv())
 state[["userAddedTracks"]] <- list()
 #----------------------------------------------------------------------------------------------------
-igvShiny <- function(options, width = NULL, height = NULL, elementId = NULL, displayMode="squished")
+igvShiny <- function(options, width = NULL, height = NULL, elementId = NULL, displayMode="squished", callback = NULL)
 {
   supportedOptions <- c("genomeName", "initialLocus")
   stopifnot(all(supportedOptions %in% names(options)))
@@ -43,7 +43,11 @@ igvShiny <- function(options, width = NULL, height = NULL, elementId = NULL, dis
     height = height,
     package = 'igvShiny',
     elementId = elementId
-    )
+   )
+  
+  if(callback) {
+     callback()
+  }
 
 } # igvShiny constructor
 #----------------------------------------------------------------------------------------------------
@@ -59,7 +63,6 @@ renderIgvShiny <- function(expr, env = parent.frame(), quoted = FALSE)
       } # force quoted
 
   htmlwidgets::shinyRenderWidget(expr, igvShinyOutput, env, quoted = TRUE)
-
 }
 #----------------------------------------------------------------------------------------------------
 redrawIgvWidget <- function(session)
@@ -231,6 +234,10 @@ loadVcfTrack <- function(session, trackName, vcfData, deleteTracksOfSameName=TRU
 } # loadVcfTrack
 #------------------------------------------------------------------------------------------------------------------------
 getSupportedGenomes <- function() {
+   return (supportedGenomes)
+} # getSupportedGenomes
+#------------------------------------------------------------------------------------------------------------------------
+getCurrentPosition <- function() {
    return (supportedGenomes)
 } # getSupportedGenomes
 #------------------------------------------------------------------------------------------------------------------------
