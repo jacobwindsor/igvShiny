@@ -36,19 +36,15 @@ igvShiny <- function(options, width = NULL, height = NULL, elementId = NULL, dis
 
   print("--- ~/github/igvShiny/R/igvShiny ctor");
 
-  htmlwidgets::createWidget(
+  val <- htmlwidgets::createWidget(
     name = 'igvShiny',
     options,
     width = width,
     height = height,
     package = 'igvShiny',
-    elementId = elementId
+    elementId = elementId,
+    preRenderHook = callback
    )
-  
-  if(!is.null(callback)) {
-     callback()
-  }
-
 } # igvShiny constructor
 #----------------------------------------------------------------------------------------------------
 igvShinyOutput <- function(outputId, width = '100%', height = '400px')
