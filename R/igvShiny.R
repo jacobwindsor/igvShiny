@@ -45,7 +45,7 @@ igvShiny <- function(options, width = NULL, height = NULL, elementId = NULL, dis
     elementId = elementId
    )
   
-  if(callback) {
+  if(!is.null(callback)) {
      callback()
   }
 
